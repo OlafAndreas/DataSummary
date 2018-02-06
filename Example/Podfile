@@ -1,0 +1,11 @@
+use_frameworks!
+
+target 'DataSummary_Example' do
+  pod 'DataSummary', :path => '../'
+
+  target 'DataSummary_Tests' do
+    inherit! :search_paths
+
+    
+  end
+end
