@@ -1,4 +1,5 @@
 use_frameworks!
+platform :ios, '9.0'
 
 target 'DataSummary_Example' do
   pod 'DataSummary', :path => '../'
@@ -6,6 +7,5 @@ target 'DataSummary_Example' do
   target 'DataSummary_Tests' do
     inherit! :search_paths
 
-    
   end
 end

@@ -1,0 +1,16 @@
+PODS:
+  - DataSummary (0.1.0)
+
+DEPENDENCIES:
+  - DataSummary (from `../`)
+
+EXTERNAL SOURCES:
+  DataSummary:
+    :path: ../
+
+SPEC CHECKSUMS:
+  DataSummary: fa2f0161295c0ca6a549fa98dd556fd7fa2405c9
+
+PODFILE CHECKSUM: 88c55edfdb6d22553258b8c6013f4193f1f7cc48
+
+COCOAPODS: 1.3.1

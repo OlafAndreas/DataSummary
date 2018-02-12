@@ -1,0 +1,22 @@
+{
+  "name": "DataSummary",
+  "version": "0.1.0",
+  "summary": "A short description of DataSummary.",
+  "description": "TODO: Add long description of the pod here.",
+  "homepage": "https://github.com/olaf.ovrum@gmail.com/DataSummary",
+  "license": {
+    "type": "MIT",
+    "file": "LICENSE"
+  },
+  "authors": {
+    "olaf.ovrum@gmail.com": "olaf@huconglobal.com"
+  },
+  "source": {
+    "git": "https://github.com/olaf.ovrum@gmail.com/DataSummary.git",
+    "tag": "0.1.0"
+  },
+  "platforms": {
+    "ios": "9.0"
+  },
+  "source_files": "DataSummary/Classes/**/*"
+}

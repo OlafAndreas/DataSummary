@@ -1,0 +1,6 @@
+framework module DataSummary {
+  umbrella header "DataSummary-umbrella.h"
+
+  export *
+  module * { export * }
+}
