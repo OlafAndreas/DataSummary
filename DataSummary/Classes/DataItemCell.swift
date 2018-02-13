@@ -55,12 +55,14 @@ class DataItemCell: UICollectionViewCell {
         backgroundView = UIView(frame: bounds)
         backgroundView!.backgroundColor = backgroundColor
         
-        let stackView = UIStackView(frame: bounds.insetBy(dx: 10, dy: 0))
+        let stackView = UIStackView(frame: bounds)
         stackView.spacing = 1
+        stackView.distribution = .fillEqually
+        stackView.contain(in: contentView)
         
         let borderView = UIView(frame: stackView.bounds)
-        stackView.addSubview(borderView)
         borderView.backgroundColor = UIColor.black
+        borderView.contain(in: stackView)
         
         let nameLabel = UILabel()
         nameLabel.text = item.name
@@ -74,7 +76,6 @@ class DataItemCell: UICollectionViewCell {
             
             let fieldStack = UIStackView()
             fieldStack.axis = .vertical
-            fieldStack.widthAnchor.constraint(equalToConstant: 80).isActive = true
             
             // Value should only be presented when there are no children present
             if let value = field.value, field.children == nil {
@@ -87,9 +88,7 @@ class DataItemCell: UICollectionViewCell {
                 label.text = String(format: value == floor(value) ? "%.0f" : "%.1f", value)
                 
                 fieldStack.addArrangedSubview(label)
-            }
-            
-            if let children = field.children {
+            } else if let children = field.children {
                 
                 let childStack = UIStackView()
                 childStack.distribution = .fillEqually
@@ -113,7 +112,5 @@ class DataItemCell: UICollectionViewCell {
             
             stackView.addArrangedSubview(fieldStack)
         }
-        
-        contentView.addSubview(stackView)
     }
 }

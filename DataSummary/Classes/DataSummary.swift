@@ -8,7 +8,7 @@
 
 import UIKit
 
-public class DataSummary: UIViewController, UICollectionViewDataSource, UICollectionViewDelegate {
+public class DataSummary: UIViewController, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
 
     var dataCollectionView: UICollectionView?
     
@@ -70,6 +70,21 @@ public class DataSummary: UIViewController, UICollectionViewDataSource, UICollec
         setupViews()
     }
     
+    public override func viewDidLoad() {
+        super.viewDidLoad()
+        
+        NotificationCenter.default.addObserver(self, selector: #selector(rotated), name: NSNotification.Name.UIDeviceOrientationDidChange, object: nil)
+    }
+    
+    deinit {
+         NotificationCenter.default.removeObserver(self)
+    }
+    
+    @objc func rotated() {
+        
+        dataCollectionView?.collectionViewLayout.invalidateLayout()
+    }
+    
     func setupViews() {
         
         view.backgroundColor = palette.backgroundColor
@@ -86,16 +101,15 @@ public class DataSummary: UIViewController, UICollectionViewDataSource, UICollec
             return
         }
         
-        let stackFrame = CGRect(x: 0, y: 0, width: view.frame.width, height: 50)
+        let dataFieldContentView = UIView(frame: CGRect(x: 0, y: 0, width: view.frame.width, height: 50))
+        dataFieldContentView.translatesAutoresizingMaskIntoConstraints = false
+        dataFieldContentView.backgroundColor = palette.dataFieldBackgroundColor
+        dataFieldContentView.contain(in: view, withHeight: 50)
         
-        let backgroundView = UIView(frame: stackFrame)
-        backgroundView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
-        backgroundView.backgroundColor = palette.dataFieldBackgroundColor
-        view.addSubview(backgroundView)
-        
-        let dataFieldNameStack = UIStackView(frame: stackFrame.insetBy(dx: 10, dy: 0))
-        dataFieldNameStack.axis = .horizontal
+        let dataFieldNameStack = UIStackView()
+        dataFieldNameStack.distribution = .fillEqually
         dataFieldNameStack.spacing = 1
+        dataFieldNameStack.contain(in: dataFieldContentView)
         
         for dataField in dataFields
             .sorted(by: { first, last in first.sorting < last.sorting }) {
@@ -107,11 +121,9 @@ public class DataSummary: UIViewController, UICollectionViewDataSource, UICollec
                 label.text = dataField.name
                 label.textColor = palette.dataFieldTextColor
                 
-                // Skip constraining the width of the first label.
                 // Only fields after the first one needs to have their textAlignment set to center.
                 if dataField.sorting > 0 {
                     label.textAlignment = .center
-                    label.widthAnchor.constraint(equalToConstant: 80).isActive = true
                 }
                 
                 fieldStack.addArrangedSubview(label)
@@ -138,15 +150,11 @@ public class DataSummary: UIViewController, UICollectionViewDataSource, UICollec
                 dataFieldNameStack.addArrangedSubview(fieldStack)
         }
         
-        view.addSubview(dataFieldNameStack)
-        
         let layout = UICollectionViewFlowLayout()
         layout.sectionInset = UIEdgeInsets.zero
         layout.minimumLineSpacing = 0
-        layout.headerReferenceSize = CGSize(width: view.frame.width, height: 40)
-        layout.itemSize = CGSize(width: view.frame.width, height: 30)
         
-        self.dataCollectionView = UICollectionView(frame: CGRect(x: 0, y: stackFrame.maxY, width: view.frame.width, height: view.frame.height - stackFrame.maxY), collectionViewLayout: layout)
+        self.dataCollectionView = UICollectionView(frame: CGRect(x: 0, y: dataFieldContentView.frame.maxY, width: view.frame.width, height: view.frame.height - dataFieldContentView.frame.maxY), collectionViewLayout: layout)
         
         guard let dataCollectionView = self.dataCollectionView else { return }
         
@@ -155,8 +163,22 @@ public class DataSummary: UIViewController, UICollectionViewDataSource, UICollec
         dataCollectionView.register(DataItemCell.self, forCellWithReuseIdentifier: DataItemCell.identifier)
         dataCollectionView.register(DataSectionHeader.self, forSupplementaryViewOfKind: UICollectionElementKindSectionHeader, withReuseIdentifier: DataSectionHeader.identifier)
         dataCollectionView.backgroundColor = palette.backgroundColor
+        dataCollectionView.translatesAutoresizingMaskIntoConstraints = false
         
         view.addSubview(dataCollectionView)
+        
+        dataCollectionView.leadingAnchor.constraint(equalTo: view.leadingAnchor).isActive = true
+        dataCollectionView.topAnchor.constraint(equalTo: dataFieldContentView.bottomAnchor).isActive = true
+        dataCollectionView.trailingAnchor.constraint(equalTo: view.trailingAnchor).isActive = true
+        dataCollectionView.bottomAnchor.constraint(equalTo: view.bottomAnchor).isActive = true
+    }
+    
+    public func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, referenceSizeForHeaderInSection section: Int) -> CGSize {
+        return CGSize(width: collectionView.frame.width, height: 40)
+    }
+    
+    public func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+        return CGSize(width: collectionView.frame.width, height: 30)
     }
     
     public func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
