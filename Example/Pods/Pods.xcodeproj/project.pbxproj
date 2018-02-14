@@ -24,6 +24,7 @@
 		CC604F6C59460BBA74262658C05B9E84 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6604A7D69453B4569E4E4827FB9155A9 /* Foundation.framework */; };
 		E05186D63A2A4B94D0481D3B88CBD80D /* Pods-DataSummary_Tests-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = C9A143AFB7C601F107EF396468938A12 /* Pods-DataSummary_Tests-dummy.m */; };
 		E995E6C02B51DEF8E28E6DBEF18D04B9 /* Pods-DataSummary_Example-umbrella.h in Headers */ = {isa = PBXBuildFile; fileRef = 56F58960AA75C2D6CBC11D842D408175 /* Pods-DataSummary_Example-umbrella.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		ED7AEB03203330D000848F39 /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED7AEB02203330D000848F39 /* Extensions.swift */; };
 		FC31174402DB0959847DF2011BF67549 /* DataSummary-umbrella.h in Headers */ = {isa = PBXBuildFile; fileRef = B69970AE9E3A15734057808DD9E29E0C /* DataSummary-umbrella.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		FC5F239508AC61AD702EDE5C6D74CBE2 /* DataItemCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 68ADAFEF93D72F1BD170686E2797F8A4 /* DataItemCell.swift */; };
 		FEDB92F0DDE9EABC9CD033B292D0B2A9 /* Pods-DataSummary_Example-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = EF5B02BA8F89A4762C5BC512A968FA5A /* Pods-DataSummary_Example-dummy.m */; };
@@ -80,6 +81,7 @@
 		E52D7C0B718FD7544C96F8621348EE7A /* Pods-DataSummary_Example.modulemap */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = "sourcecode.module-map"; path = "Pods-DataSummary_Example.modulemap"; sourceTree = "<group>"; };
 		E6965C5492FBA7A59B52BBEFD276DCEF /* Pods_DataSummary_Example.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_DataSummary_Example.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		ED0876EF3D2D68E2B44D79549E862F07 /* Sortable.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; name = Sortable.swift; path = DataSummary/Classes/Sortable.swift; sourceTree = "<group>"; };
+		ED7AEB02203330D000848F39 /* Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = Extensions.swift; path = DataSummary/Classes/Extensions.swift; sourceTree = "<group>"; };
 		EF5B02BA8F89A4762C5BC512A968FA5A /* Pods-DataSummary_Example-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "Pods-DataSummary_Example-dummy.m"; sourceTree = "<group>"; };
 		FE54268B3A7D31ADFCD182E5BAD42E53 /* Pods-DataSummary_Tests-umbrella.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "Pods-DataSummary_Tests-umbrella.h"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -136,6 +138,7 @@
 				C5DC00CC095155948CAA9690F44EACC7 /* Named.swift */,
 				ED0876EF3D2D68E2B44D79549E862F07 /* Sortable.swift */,
 				840B425D3F002943691A1968DCEF6B38 /* Support Files */,
+				ED7AEB02203330D000848F39 /* Extensions.swift */,
 			);
 			name = DataSummary;
 			path = ../..;
@@ -359,6 +362,7 @@
 				5DFA11B9F4A8609C98D9844D25E7D61A /* DataSection.swift in Sources */,
 				98E665E6A097F6B4D7F7D8E7EE7B9238 /* DataSectionHeader.swift in Sources */,
 				6DF7A15ABB8466AAD3B4BEEA96569DE0 /* DataSummary-dummy.m in Sources */,
+				ED7AEB03203330D000848F39 /* Extensions.swift in Sources */,
 				043309697950097148133A04ECB321DA /* DataSummary.swift in Sources */,
 				84EA7C6FEB6F11A5C23EDA3BFAC1BB19 /* DataSummaryWorker.swift in Sources */,
 				0F137FA830451FAD7DC962185AF70296 /* Named.swift in Sources */,

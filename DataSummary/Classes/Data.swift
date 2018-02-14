@@ -11,12 +11,27 @@ import Foundation
 public struct SData {
     
     public struct Section: DataSection {
+        
+        public init(name: String, sorting: Int, items: [DataItem]) {
+            self.name = name
+            self.sorting = sorting
+            self.items = items
+        }
+        
         public var name: String
         public var sorting: Int
         public var items: [DataItem]
     }
     
     public struct Item: DataItem {
+        
+        public init(name: String, sorting: Int, grouping: Int, fields: [DataField]) {
+            self.name = name
+            self.sorting = sorting
+            self.grouping = grouping
+            self.fields = fields
+        }
+        
         public var name: String
         public var sorting: Int
         public var grouping: Int
@@ -24,6 +39,14 @@ public struct SData {
     }
     
     public struct Field: DataField {
+        
+        public init(name: String, sorting: Int, value: Double?, children: [DataField]?) {
+            self.name = name
+            self.sorting = sorting
+            self.value = value
+            self.children = children
+        }
+        
         public var name: String
         public var sorting: Int
         public var value: Double?
@@ -38,15 +61,15 @@ public struct SData {
     public static func getExampleData() -> [DataSection] {
         
         let events = SData.Section(name: "Section 1", sorting: 0, items: [
-            SData.Item(name: "Item 1", sorting: 1, grouping: rand(2), fields: fields),
-            SData.Item(name: "Item 2", sorting: 2, grouping: rand(2), fields: fields),
-            SData.Item(name: "Item 3", sorting: 3, grouping: rand(2), fields: fields),
-            SData.Item(name: "Item 4", sorting: 4, grouping: rand(2), fields: fields)
+            SData.Item(name: "Short name", sorting: 1, grouping: rand(2), fields: fields),
+            SData.Item(name: "Medium  - name", sorting: 2, grouping: rand(2), fields: fields),
+            SData.Item(name: "Long - Long  - name", sorting: 3, grouping: rand(2), fields: fields),
+            SData.Item(name: "Very - Long  - Long  - name", sorting: 4, grouping: rand(2), fields: fields)
             ].sorted(by: { first, last in first.sorting < last.sorting }))
         
         let criteria = SData.Section(name: "Section 2", sorting: 1, items: [
-            SData.Item(name: "Item 1", sorting: 1, grouping: rand(3), fields: fields),
-            SData.Item(name: "Item 2", sorting: 2, grouping: rand(3), fields: fields),
+            SData.Item(name: "Item 1 medium", sorting: 1, grouping: rand(3), fields: fields),
+            SData.Item(name: "Item 2 with a long name", sorting: 2, grouping: rand(3), fields: fields),
             SData.Item(name: "Item 3", sorting: 3, grouping: rand(3), fields: fields),
             SData.Item(name: "Item 4", sorting: 4, grouping: rand(3), fields: fields),
             SData.Item(name: "Item 5", sorting: 5, grouping: rand(3), fields: fields),
