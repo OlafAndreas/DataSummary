@@ -16,6 +16,8 @@ class DataItemCell: UICollectionViewCell {
     var palette: ColorPalette?
     var indexPath: IndexPath?
     
+    var nameLabelWidthConstraint: NSLayoutConstraint?
+    
     public func setup(using item: DataItem, with palette: ColorPalette, at indexPath: IndexPath) {
         self.item = item
         self.palette = palette
@@ -46,6 +48,15 @@ class DataItemCell: UICollectionViewCell {
         return color
     }
     
+    override func layoutSubviews() {
+        super.layoutSubviews()
+        
+        guard let constraint = nameLabelWidthConstraint else { return }
+        
+        constraint.constant = frame.width * 0.33
+        contentView.setNeedsUpdateConstraints()
+    }
+    
     func setupViews() {
         
         guard let item = self.item, let palette = self.palette, let indexPath = self.indexPath else { return }
@@ -53,34 +64,40 @@ class DataItemCell: UICollectionViewCell {
         let backgroundColor = indexPath.item % 2 == 0 ? palette.evenCellBackgroundColor : palette.oddCellBackgrounColor
         
         backgroundView = UIView(frame: bounds)
-        backgroundView!.backgroundColor = backgroundColor
+        backgroundView!.backgroundColor = palette.backgroundColor
         
-        let stackView = UIStackView(frame: bounds)
-        stackView.spacing = 1
-        stackView.distribution = .fillEqually
-        stackView.contain(in: contentView)
-        
-        let borderView = UIView(frame: stackView.bounds)
-        borderView.backgroundColor = UIColor.black
-        borderView.contain(in: stackView)
+        let rootStackView = UIStackView()
+        rootStackView.spacing = 1
+        rootStackView.contain(in: contentView)
         
         let nameLabel = UILabel()
+        nameLabel.layoutMargins = UIEdgeInsets(top: 0, left: 4, bottom: 0, right: 4)
         nameLabel.text = item.name
         nameLabel.textColor = palette.textColor
+        nameLabel.font = UIFont.systemFont(ofSize: 14)
         nameLabel.adjustsFontSizeToFitWidth = true
         nameLabel.backgroundColor = backgroundColor
+        nameLabelWidthConstraint = nameLabel.widthAnchor.constraint(equalToConstant: frame.width * 0.33)
+        nameLabelWidthConstraint?.isActive = true
+        rootStackView.addArrangedSubview(nameLabel)
         
-        stackView.addArrangedSubview(nameLabel)
+        let itemStackView = UIStackView()
+        itemStackView.spacing = 1
+        itemStackView.distribution = .fillEqually
+        rootStackView.addArrangedSubview(itemStackView)
         
         for field in item.fields {
             
             let fieldStack = UIStackView()
             fieldStack.axis = .vertical
             
+            let labelFont = UIFont.systemFont(ofSize: 12)
+            
             // Value should only be presented when there are no children present
             if let value = field.value, field.children == nil {
                 
                 let label = UILabel()
+                label.font = labelFont
                 label.textAlignment = .center
                 label.textColor = palette.textColor
                 label.backgroundColor = backgroundColor
@@ -96,6 +113,7 @@ class DataItemCell: UICollectionViewCell {
                 for (index, child) in children.sorted(by: { first, last in first.sorting < last.sorting }).enumerated() {
                     
                     let label = UILabel()
+                    label.font = labelFont
                     label.textAlignment = .center
                     label.textColor = palette.textColor
                     label.backgroundColor = index % 2 == 0 ? backgroundColor : darkened(backgroundColor)
@@ -110,7 +128,7 @@ class DataItemCell: UICollectionViewCell {
                 fieldStack.addArrangedSubview(childStack)
             }
             
-            stackView.addArrangedSubview(fieldStack)
+            itemStackView.addArrangedSubview(fieldStack)
         }
     }
 }
