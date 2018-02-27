@@ -12,6 +12,12 @@ public class DataSummary: UIViewController, UICollectionViewDataSource, UICollec
 
     var dataCollectionView: UICollectionView?
     
+    var nameLabelWidthConstraint: NSLayoutConstraint?
+    
+    var nameLabelWidth: CGFloat {
+        return view.frame.width * 0.33
+    }
+    
     // A default color palette providing colors for the various parts of the data summary view.
     var palette = ColorPalette(
         dataFieldBackgroundColor: UIColor.darkGray,
@@ -52,12 +58,9 @@ public class DataSummary: UIViewController, UICollectionViewDataSource, UICollec
         // Get the data fields of the first item in the first section,
         // this will be used to create a header with the field names describing the values.
         // The first field will always be Name, no need to define this every time.
+        // The sorting of Name is set to -1 to ensure it always is setup at the start.
         
-        dataFields = sections.first!.items.first!.fields.reduce([SData.Field(name: "Name", sorting: 0, value: nil, children: nil)], { result, field in
-            var temp = result!
-            temp.append(field)
-            return temp
-        })
+        dataFields = sections.first!.items.first!.fields
         
         if let palette = usePalette {
             self.palette = palette
@@ -82,7 +85,15 @@ public class DataSummary: UIViewController, UICollectionViewDataSource, UICollec
     
     @objc func rotated() {
         
+        updateNameLabelWidthConstraint()
         dataCollectionView?.collectionViewLayout.invalidateLayout()
+    }
+    
+    func updateNameLabelWidthConstraint() {
+        
+        nameLabelWidthConstraint?.constant = nameLabelWidth
+        
+        view.setNeedsUpdateConstraints()
     }
     
     func setupViews() {
@@ -101,18 +112,26 @@ public class DataSummary: UIViewController, UICollectionViewDataSource, UICollec
             return
         }
         
-        let dataFieldContentView = UIView(frame: CGRect(x: 0, y: 0, width: view.frame.width, height: 50))
-        dataFieldContentView.translatesAutoresizingMaskIntoConstraints = false
-        dataFieldContentView.backgroundColor = palette.dataFieldBackgroundColor
-        dataFieldContentView.contain(in: view, withHeight: 50)
+        let dataFieldContentStack = UIStackView(frame: CGRect(x: 0, y: 0, width: view.frame.width, height: 50))
+        dataFieldContentStack.backgroundColor = palette.dataFieldBackgroundColor
+        dataFieldContentStack.contain(in: view, withHeight: 50)
+        
+        let nameLabel = UILabel()
+        nameLabel.text = "Name"
+        nameLabel.textColor = palette.dataFieldTextColor
+        nameLabelWidthConstraint = nameLabel.widthAnchor.constraint(equalToConstant: nameLabelWidth)
+        nameLabelWidthConstraint?.isActive = true
+        dataFieldContentStack.addArrangedSubview(nameLabel)
         
         let dataFieldNameStack = UIStackView()
         dataFieldNameStack.distribution = .fillEqually
         dataFieldNameStack.spacing = 1
-        dataFieldNameStack.contain(in: dataFieldContentView)
+        dataFieldContentStack.addArrangedSubview(dataFieldNameStack)
         
         for dataField in dataFields
             .sorted(by: { first, last in first.sorting < last.sorting }) {
+                
+                if dataField.sorting == -1 { continue }
                 
                 let fieldStack = UIStackView()
                 fieldStack.axis = .vertical
@@ -121,8 +140,14 @@ public class DataSummary: UIViewController, UICollectionViewDataSource, UICollec
                 label.text = dataField.name
                 label.textColor = palette.dataFieldTextColor
                 
-                // Only fields after the first one needs to have their textAlignment set to center.
-                if dataField.sorting > 0 {
+                // -1 is the sorting value of the name field
+                if dataField.sorting == -1 {
+                    
+                    // Set the width of the name label to be equal to the name field in the items list.
+                    fieldStack.widthAnchor.constraint(equalToConstant: dataFieldContentStack.bounds.width * 0.25)
+                } else {
+                    
+                    // Only fields after the name field needs to have their textAlignment set to center.
                     label.textAlignment = .center
                 }
                 
@@ -154,7 +179,7 @@ public class DataSummary: UIViewController, UICollectionViewDataSource, UICollec
         layout.sectionInset = UIEdgeInsets.zero
         layout.minimumLineSpacing = 0
         
-        self.dataCollectionView = UICollectionView(frame: CGRect(x: 0, y: dataFieldContentView.frame.maxY, width: view.frame.width, height: view.frame.height - dataFieldContentView.frame.maxY), collectionViewLayout: layout)
+        self.dataCollectionView = UICollectionView(frame: CGRect(x: 0, y: dataFieldContentStack.frame.maxY, width: view.frame.width, height: view.frame.height - dataFieldContentStack.frame.maxY), collectionViewLayout: layout)
         
         guard let dataCollectionView = self.dataCollectionView else { return }
         
@@ -168,7 +193,7 @@ public class DataSummary: UIViewController, UICollectionViewDataSource, UICollec
         view.addSubview(dataCollectionView)
         
         dataCollectionView.leadingAnchor.constraint(equalTo: view.leadingAnchor).isActive = true
-        dataCollectionView.topAnchor.constraint(equalTo: dataFieldContentView.bottomAnchor).isActive = true
+        dataCollectionView.topAnchor.constraint(equalTo: dataFieldContentStack.bottomAnchor).isActive = true
         dataCollectionView.trailingAnchor.constraint(equalTo: view.trailingAnchor).isActive = true
         dataCollectionView.bottomAnchor.constraint(equalTo: view.bottomAnchor).isActive = true
     }
@@ -178,7 +203,7 @@ public class DataSummary: UIViewController, UICollectionViewDataSource, UICollec
     }
     
     public func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        return CGSize(width: collectionView.frame.width, height: 30)
+        return CGSize(width: collectionView.frame.width, height: 45)
     }
     
     public func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
