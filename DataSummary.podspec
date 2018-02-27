@@ -7,13 +7,12 @@ Pod::Spec.new do |s|
 Display data summary in a spreadsheet. Configure the data to a structure in which manner you want it presented.
                        DESC
 
-  s.homepage         = 'https://github.com/olaf.ovrum@gmail.com/DataSummary'
-  # s.screenshots     = 'www.example.com/screenshots_1', 'www.example.com/screenshots_2'
+  s.homepage         = 'https://github.com/huconglobal/DataSummary'
   s.license          = { :type => 'MIT', :file => 'LICENSE' }
   s.author           = { 'olaf.ovrum@gmail.com' => 'olaf.ovrum@gmail.com' }
-  s.source           = { :git => 'https://github.com/olaf.ovrum@gmail.com/DataSummary.git', :tag => s.version.to_s }
-  # s.social_media_url = 'https://twitter.com/<TWITTER_USERNAME>'
-
+  s.source           = { :git => 'https://github.com/huconglobal/DataSummary.git', :tag => s.version.to_s }
+  
+  s.swift_version = '4.0.3'
   s.ios.deployment_target = '9.0'
 
   s.source_files = 'DataSummary/Classes/**/*'
