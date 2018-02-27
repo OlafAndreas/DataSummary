@@ -9,6 +9,24 @@
 
 To run the example project, clone the repo, and run `pod install` from the Example directory first.
 
+### Usage
+```swift
+		// Initalizes the UIViewController
+		let summaryViewController = DataSummary()
+        
+        // Gets a set of example data
+        let data = SData.getExampleData()
+        
+        // Converts the data to a statistical format
+        let statistics = DataSummaryWorker.generateStatisticalData(from: data)
+        
+        // Prepares the UIViewController with the provided data
+        summaryViewController.setup(sections: statistics)
+
+        // Present the DataSummary
+        present(summaryViewController, animated: true, completion: nil)
+```
+
 ## Requirements
 
 ## Installation
