@@ -17,7 +17,10 @@ public struct ColorPalette {
         oddCellBackgrounColor: UIColor,
         textColor: UIColor,
         collectionHeaderBackgroundColor: UIColor,
-        collectionHeaderTextColor: UIColor){
+        collectionHeaderTextColor: UIColor,
+        success: UIColor,
+        danger: UIColor,
+        warning: UIColor){
         
         self.dataFieldBackgroundColor = dataFieldBackgroundColor
         self.dataFieldTextColor = dataFieldTextColor
@@ -27,6 +30,9 @@ public struct ColorPalette {
         self.textColor = textColor
         self.collectionHeaderBackgroundColor = collectionHeaderBackgroundColor
         self.collectionHeaderTextColor = collectionHeaderTextColor
+        self.success = success
+        self.danger = danger
+        self.warning = warning
     }
     
     public var dataFieldBackgroundColor: UIColor
@@ -37,4 +43,7 @@ public struct ColorPalette {
     public var textColor: UIColor
     public var collectionHeaderBackgroundColor: UIColor
     public var collectionHeaderTextColor: UIColor
+    public var success: UIColor
+    public var danger: UIColor
+    public var warning: UIColor
 }
