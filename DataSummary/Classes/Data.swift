@@ -15,7 +15,7 @@ public struct SData {
         public init(name: String, sorting: Int, items: [DataItem]) {
             self.name = name
             self.sorting = sorting
-            self.items = items
+            self.items = items.sorted(by: { first, last in first.sorting < last.sorting })
         }
         
         public var name: String
@@ -29,7 +29,7 @@ public struct SData {
             self.name = name
             self.sorting = sorting
             self.grouping = grouping
-            self.fields = fields
+            self.fields = fields.sorted(by: { first, last in first.sorting < last.sorting })
         }
         
         public var name: String
@@ -44,7 +44,7 @@ public struct SData {
             self.name = name
             self.sorting = sorting
             self.value = value
-            self.children = children
+            self.children = children?.sorted(by: { first, last in first.sorting < last.sorting })
         }
         
         public var name: String
