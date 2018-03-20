@@ -148,12 +148,16 @@ public class DataSummary: UIViewController, UICollectionViewDataSource, UICollec
         titleLabel.font = UIFont.systemFont(ofSize: 35, weight: .thin)
         contentStack.addArrangedSubview(titleLabel)
         
-        let metaRows: [[MetaField]] = []/*[[
+        let metaRows: [[MetaField]] = []
+        
+        /* TODO: Add metafield initialiation
+        [[
             MetaField(label: "Collection", value: "OPC 3"),
             MetaField(label: "Location", value: "Sola, Stavanger"),
             MetaField(label: "Somelabel", value: "Somevalue")],[
             MetaField(label: "Instructor", value: "Nordmann, Ola"),
-            MetaField(label: "Start Date", value: "99:99:99 9999-99-99")]]*/
+            MetaField(label: "Start Date", value: "99:99:99 9999-99-99")]]
+        */
         
         for row in metaRows {
             
@@ -295,6 +299,13 @@ public class DataSummary: UIViewController, UICollectionViewDataSource, UICollec
     }
     
     public func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, referenceSizeForHeaderInSection section: Int) -> CGSize {
+        
+        // When there's only one section we don't need to display the section header,
+        // returning a zero size makes the collectionView not to request a view for this header.
+        if sections.count == 1 {
+            return CGSize.zero
+        }
+        
         return CGSize(width: collectionView.frame.width, height: 35)
     }
     
