@@ -53,7 +53,7 @@ class DataItemCell: UICollectionViewCell {
         
         guard let constraint = nameLabelWidthConstraint else { return }
         
-        constraint.constant = frame.width * 0.33
+        constraint.constant = (frame.width * 0.33) - 10
         contentView.setNeedsUpdateConstraints()
     }
     
@@ -61,20 +61,28 @@ class DataItemCell: UICollectionViewCell {
         
         guard let item = self.item, let palette = self.palette, let indexPath = self.indexPath else { return }
         
+        contentView.subviews.forEach({ $0.removeFromSuperview() })
+        
         let backgroundColor = indexPath.item % 2 == 0 ? palette.evenCellBackgroundColor : palette.oddCellBackgrounColor
         
         backgroundView = UIView(frame: bounds)
-        backgroundView!.backgroundColor = palette.backgroundColor
+        backgroundView!.backgroundColor = backgroundColor
         
         let rootStackView = UIStackView()
         rootStackView.spacing = 1
+        rootStackView.layoutMargins = UIEdgeInsets(top: 0, left: 10, bottom: 0, right: 0)
+        rootStackView.isLayoutMarginsRelativeArrangement = true
         rootStackView.contain(in: contentView)
         
+        // This view adds a black seperator line between fields
+        let stackBackgroundView = UIView(frame: CGRect(x: 100, y: 0, width: bounds.width-100, height: bounds.height))
+        stackBackgroundView.backgroundColor = UIColor.black
+        rootStackView.addSubview(stackBackgroundView)
+        
         let nameLabel = UILabel()
-        nameLabel.layoutMargins = UIEdgeInsets(top: 0, left: 4, bottom: 0, right: 4)
         nameLabel.text = item.name
         nameLabel.textColor = palette.textColor
-        nameLabel.font = UIFont.systemFont(ofSize: 14)
+        nameLabel.font = UIFont.systemFont(ofSize: 12, weight: .thin)
         nameLabel.adjustsFontSizeToFitWidth = true
         nameLabel.backgroundColor = backgroundColor
         nameLabelWidthConstraint = nameLabel.widthAnchor.constraint(equalToConstant: frame.width * 0.33)
@@ -110,7 +118,7 @@ class DataItemCell: UICollectionViewCell {
                 let childStack = UIStackView()
                 childStack.distribution = .fillEqually
                 
-                for (index, child) in children.sorted(by: { first, last in first.sorting < last.sorting }).enumerated() {
+                for (index, child) in children.enumerated() {
                     
                     let label = UILabel()
                     label.font = labelFont
@@ -119,7 +127,28 @@ class DataItemCell: UICollectionViewCell {
                     label.backgroundColor = index % 2 == 0 ? backgroundColor : darkened(backgroundColor)
                     
                     if let value = child.value {
+                        
                         label.text = String(format: value == floor(value) ? "%.0f" : "%.1f", value)
+                        
+                        // Only appy styling if this field should receive it.
+                        if child.shouldReceiveStyling {
+                        
+                            if value < 2 {
+                                
+                                if value < 1 {
+                                    
+                                    label.textColor = palette.danger
+                                    
+                                } else {
+                                    
+                                    label.textColor = palette.warning
+                                }
+                                
+                            } else if value > 4 {
+                                
+                                label.textColor = palette.success
+                            }
+                        }
                     }
                     
                     childStack.addArrangedSubview(label)
