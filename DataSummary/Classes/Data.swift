@@ -15,7 +15,7 @@ public struct SData {
         public init(name: String, sorting: Int, items: [DataItem]) {
             self.name = name
             self.sorting = sorting
-            self.items = items
+            self.items = items.sorted(by: { first, last in first.sorting < last.sorting })
         }
         
         public var name: String
@@ -29,7 +29,7 @@ public struct SData {
             self.name = name
             self.sorting = sorting
             self.grouping = grouping
-            self.fields = fields
+            self.fields = fields.sorted(by: { first, last in first.sorting < last.sorting })
         }
         
         public var name: String
@@ -40,17 +40,19 @@ public struct SData {
     
     public struct Field: DataField {
         
-        public init(name: String, sorting: Int, value: Double?, children: [DataField]?) {
+        public init(name: String, sorting: Int, value: Double?, children: [DataField]?, shouldReceiveStyling: Bool = true) {
             self.name = name
             self.sorting = sorting
             self.value = value
-            self.children = children
+            self.children = children?.sorted(by: { first, last in first.sorting < last.sorting })
+            self.shouldReceiveStyling = shouldReceiveStyling
         }
         
         public var name: String
         public var sorting: Int
         public var value: Double?
         public var children: [DataField]?
+        public var shouldReceiveStyling: Bool
     }
     
     ///

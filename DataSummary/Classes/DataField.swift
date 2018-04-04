@@ -14,6 +14,13 @@ import Foundation
 /// Use Children when you want to display multiple values for the field.
 ///
 public protocol DataField: Sortable, Named {
+    
+    /// The value to be displayed in the cell
     var value: Double? { get }
+    
+    /// The children that will be presented beneath this "header"
     var children: [DataField]? { get }
+    
+    /// Return true if this field should receive styling, otherwise false.
+    var shouldReceiveStyling: Bool { get }
 }
