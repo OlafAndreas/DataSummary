@@ -10,6 +10,23 @@ import UIKit
 
 public struct ColorPalette {
     
+    /**
+ 
+     Creates a ColorPalette with the given colors.
+     
+     - parameter dataFieldBackgroundColor: Background color of the data field header view, the one below the title.
+        - dataFieldTextColor: Text color of the labels in the field header view.
+        - backgroundColor: Background color of the root view.
+        - evenCellBackgroundColor: Background color of the cells with an even index.
+        - oddCellBackgroundColor: Background color of the cells with an odd index.
+        - textColor: Text color of the labels within cells.
+        - collectionHeaderBackgroundColor: Background color of the section headers.
+        - collectionHeaderTextColor: Text color of the labels within section headers.
+        - success: Text color of data field values above a given treshold that should receive styling.
+        - danger: Text color of data field values below a given treshold that should receive styling.
+        - warning: Text color of data field values below a given treshold that should receive styling.
+     */
+ 
     public init(dataFieldBackgroundColor: UIColor,
         dataFieldTextColor: UIColor,
         backgroundColor: UIColor,

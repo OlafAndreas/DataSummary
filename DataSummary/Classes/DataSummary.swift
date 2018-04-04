@@ -210,7 +210,9 @@ public class DataSummary: UIViewController, UICollectionViewDataSource, UICollec
         }
         
         let dataFieldContentStack = UIStackView()
-        dataFieldContentStack.backgroundColor = palette.dataFieldBackgroundColor
+        let dataFieldBackgroundView = UIView()
+        dataFieldBackgroundView.backgroundColor = palette.dataFieldBackgroundColor
+        dataFieldBackgroundView.contain(in: dataFieldContentStack)
         
         contentStack.addArrangedSubview(dataFieldContentStack)
         
