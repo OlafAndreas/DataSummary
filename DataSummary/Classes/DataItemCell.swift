@@ -130,20 +130,24 @@ class DataItemCell: UICollectionViewCell {
                         
                         label.text = String(format: value == floor(value) ? "%.0f" : "%.1f", value)
                         
-                        if value < 2 {
-                            
-                            if value < 1 {
+                        // Only appy styling if this field should receive it.
+                        if child.shouldReceiveStyling {
+                        
+                            if value < 2 {
                                 
-                                label.textColor = palette.danger
+                                if value < 1 {
+                                    
+                                    label.textColor = palette.danger
+                                    
+                                } else {
+                                    
+                                    label.textColor = palette.warning
+                                }
                                 
-                            } else {
+                            } else if value > 4 {
                                 
-                                label.textColor = palette.warning
+                                label.textColor = palette.success
                             }
-                            
-                        } else if value > 4 {
-                            
-                            label.textColor = palette.success
                         }
                     }
                     

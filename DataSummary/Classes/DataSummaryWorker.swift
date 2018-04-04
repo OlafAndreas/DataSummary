@@ -72,7 +72,7 @@ public class DataSummaryWorker {
                         
                     }).count
                 
-                ), children: nil)
+                ), children: nil, shouldReceiveStyling: false)
                 collapsedItem.fields.append(zeroOrOneField)
                 
                 // Add all collapsed items for this group to the collapsedItems array.
@@ -122,7 +122,7 @@ public class DataSummaryWorker {
                 let fields = allFields.filter({ $0.name == field.name })
                 
                 // Create an array of values from all fields, this will also safely unwrap the optional value.
-                let values = fields.flatMap({ $0.value })
+                let values = fields.compactMap({ $0.value })
                 
                 // Create an array of the square roots of the distance between the field value and the average value.
                 let squaredDistances = values.map({ sqrt(fabs($0 - average)) })
@@ -136,7 +136,7 @@ public class DataSummaryWorker {
                 // Step 5: Take the square root.
                 let standardDeviation = sqrt(sumDividedByCount)
                 
-                let standardDeviationField = SData.Field(name: "SD", sorting: children.count, value: standardDeviation, children: nil)
+                let standardDeviationField = SData.Field(name: "SD", sorting: children.count, value: standardDeviation, children: nil, shouldReceiveStyling: false)
                 children.append(standardDeviationField)
                 
                 deltaField.children = children
