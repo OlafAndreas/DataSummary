@@ -16,22 +16,29 @@ class DataSectionHeader: UICollectionReusableView {
     
     var palette: ColorPalette!
     
-    var titleLabel: UILabel!
+    var titleLabel: UILabel?
     
     public func setup(using section: DataSection, with palette: ColorPalette) {
         self.section = section
         self.palette = palette
         
+        if let titleLabel = titleLabel {
+
+            titleLabel.text = section.name
+            
+            return
+        }
+        
         titleLabel = UILabel(frame: bounds.insetBy(dx: 5, dy: 0))
         
-        titleLabel.autoresizingMask = [.flexibleWidth, .flexibleHeight]
+        titleLabel!.autoresizingMask = [.flexibleWidth, .flexibleHeight]
         
-        addSubview(titleLabel)
+        addSubview(titleLabel!)
         
         backgroundColor = palette.collectionHeaderBackgroundColor
         
-        titleLabel.textColor = palette.collectionHeaderTextColor
+        titleLabel!.textColor = palette.collectionHeaderTextColor
         
-        titleLabel.text = section.name
+        titleLabel!.text = section.name
     }
 }
