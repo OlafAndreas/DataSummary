@@ -62,7 +62,7 @@ public class DataSummaryWorker {
                 
                 let zeroOrOneField = SData.Field(name: "0 or 1", sorting: collapsedItem.fields.count, value: Double(
                     
-                    items.flatMap({ $0.fields }).filter({
+                    items.compactMap({ $0.fields }).joined().filter({
                         
                         // Fields with no values returns false
                         guard let value = $0.value else { return false }
@@ -116,7 +116,7 @@ public class DataSummaryWorker {
                 
                 // Step 2: For each data point, find the square of its distance to the mean.
                 // Create one array containing all fields in all items.
-                let allFields = originalItems.flatMap({ $0.fields })
+                let allFields = originalItems.map({ $0.fields }).joined()
                 
                 // Create an array of fields corresponding to the current field name.
                 let fields = allFields.filter({ $0.name == field.name })
